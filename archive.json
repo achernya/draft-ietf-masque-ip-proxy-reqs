@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-10-22T00:04:53.227349+00:00",
+  "timestamp": "2020-10-25T00:04:52.404369+00:00",
   "repo": "ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs",
   "labels": [
     {
@@ -49,6 +49,47 @@
       "color": "ffffff"
     }
   ],
-  "issues": [],
+  "issues": [
+    {
+      "number": 1,
+      "id": "MDU6SXNzdWU3Mjg0NDA4MTY=",
+      "title": "Proxying a single IP address, or an IP subnet?",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/1",
+      "state": "OPEN",
+      "author": "SpencerDawkins",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "There is a question whether \"IP proxying\" means proxying an IP subnet, as opposed to proxying a single IP address. \r\n\r\nThis question was discussed on the MASQUE mailing list during the adoption call for this draft. @DavidSchinazi asked me to open a Github issue for it. \r\n\r\nThe adoption call mail thread starts at https://mailarchive.ietf.org/arch/msg/masque/cpcXQVBjpMQLbHMGpyAJCucEg3A/. I believe the first e-mail to mention the question is Magnus's at https://mailarchive.ietf.org/arch/msg/masque/5k_IUw6-A8jQi3i_q1MOtZt5Hl8/.\r\n\r\n",
+      "createdAt": "2020-10-23T18:39:36Z",
+      "updatedAt": "2020-10-23T20:27:38Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "My thought is that we'll define a way to proxy IP packets, not addresses. However, during negotiation the new protocol will need the ability to negotiate addresses, similar to DHCP. The most common use case will most likely be one where the client connects and the proxy assigns it one address (along with configuring gateway, routes, DNS, etc.). However, I believe that we should support the use case where the client tells the server \"I own this subnet\", since QBONE uses that in production today.",
+          "createdAt": "2020-10-23T20:27:37Z",
+          "updatedAt": "2020-10-23T20:27:37Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWU3Mjg0NDg3NDA=",
+      "title": "Linking Requirements to the Use Cases with those requirements",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/2",
+      "state": "OPEN",
+      "author": "SpencerDawkins",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "This draft contains a list of use cases (with descriptions) and a list of requirements (with descriptions). \r\n\r\nIt isn't obvious to me which requirements come from which use cases. My suggestion would be to link each requirement to the use cases that require it.\r\n\r\nOne way to accomplish that, would be tagging each requirement with the section numbers/xrefs for the use cases that require it. Other ways would also work. \r\n\r\nMy understanding is that the working group is still thinking about use cases, and it's possible/likely that some will be added, and even some use cases deleted. It will be much easier to maintain the list of requirements if we don't have to analyze all requirements each time we adjust the list of use cases that are considered in scope for IP proxying. \r\n\r\nThis suggestion was made on the MASQUE mailing list during the adoption call for this draft. \r\n\r\nThe adoption call mail thread starts at https://mailarchive.ietf.org/arch/msg/masque/cpcXQVBjpMQLbHMGpyAJCucEg3A/. I made the suggestion in https://mailarchive.ietf.org/arch/msg/masque/kG_BNeCShr98jXWC5MbjVjgHqH4/.",
+      "createdAt": "2020-10-23T18:54:07Z",
+      "updatedAt": "2020-10-23T18:54:07Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
   "pulls": []
 }
