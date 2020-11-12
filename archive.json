@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-11-10T00:03:39.591742+00:00",
+  "timestamp": "2020-11-12T00:05:53.054832+00:00",
   "repo": "ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs",
   "labels": [
     {
@@ -62,7 +62,7 @@
       "labels": [],
       "body": "There is a question whether \"IP proxying\" means proxying an IP subnet, as opposed to proxying a single IP address. \r\n\r\nThis question was discussed on the MASQUE mailing list during the adoption call for this draft. @DavidSchinazi asked me to open a Github issue for it. \r\n\r\nThe adoption call mail thread starts at https://mailarchive.ietf.org/arch/msg/masque/cpcXQVBjpMQLbHMGpyAJCucEg3A/. I believe the first e-mail to mention the question is Magnus's at https://mailarchive.ietf.org/arch/msg/masque/5k_IUw6-A8jQi3i_q1MOtZt5Hl8/.\r\n\r\n",
       "createdAt": "2020-10-23T18:39:36Z",
-      "updatedAt": "2020-10-23T20:27:38Z",
+      "updatedAt": "2020-11-11T12:49:06Z",
       "closedAt": null,
       "comments": [
         {
@@ -71,6 +71,13 @@
           "body": "My thought is that we'll define a way to proxy IP packets, not addresses. However, during negotiation the new protocol will need the ability to negotiate addresses, similar to DHCP. The most common use case will most likely be one where the client connects and the proxy assigns it one address (along with configuring gateway, routes, DNS, etc.). However, I believe that we should support the use case where the client tells the server \"I own this subnet\", since QBONE uses that in production today.",
           "createdAt": "2020-10-23T20:27:37Z",
           "updatedAt": "2020-10-23T20:27:37Z"
+        },
+        {
+          "author": "gloinul",
+          "authorAssociation": "NONE",
+          "body": "@DavidSchinazi I think we should dig more into what the implications are of proxying a subnet compared to an address that comes from a range provided by the MASQUE server. I think these differences are significant and have impact on what is required for safe general deployment of the protocol. \r\n\r\nSo if one proxying a single IP address borrowed from the MASQUE server then;\r\n - Source Address validation is trivial, the MASQUE client's traffic will leave the MASQUE server with an address belonging to the MASQUE server so no risk of source address spoofing.\r\n - There are no routing considerations for the MASQUE server as the address use by the MASQUE server is not routed by the MASQUE server. \r\n\r\nFor a sub-net proxying the above concerns looks significantly different.\r\n - The MASQUE server does not own the IP subnet range and thus needs additional mechanism to determine if the MASQUE client is an actual gateway for that subnet or is simply spoofing that subnet.\r\n - The MASQUE server need to inject routes for the subnet upstream of it self to ensure that there are a return routability path. Such operations have significant operational concerns. \r\n\r\nThus, the security considerations and necessary security model for these operational concerns are very different from proxying individual IP address belonging to the MASQUE server. That is why I am arguing that this needs to be an extension in a separate document. \r\n\r\nI understand that in QBONE you have this functionality. But, this is a specific use case and deployment where you have considered how you in this specific model handle these cases. Thus the scope and the description necessary are different from single IP address proxying. For a standardized mechanism I hope you agree that these concerns needs to be raised and addressed through either limitations in applicability scope and/or solutions to the security threats of using the mechanism. \r\n\r\nThus can we put the subnet functionality as an extension where these additional scope and security aspects can be handled differently rather than trying to have them both in the same document. I also expect differences in progress due to the review and feedback necessary to bring the subnet parts to IETF consensus. ",
+          "createdAt": "2020-11-11T12:49:05Z",
+          "updatedAt": "2020-11-11T12:49:05Z"
         }
       ]
     },
@@ -87,6 +94,118 @@
       "body": "This draft contains a list of use cases (with descriptions) and a list of requirements (with descriptions). \r\n\r\nIt isn't obvious to me which requirements come from which use cases. My suggestion would be to link each requirement to the use cases that require it.\r\n\r\nOne way to accomplish that, would be tagging each requirement with the section numbers/xrefs for the use cases that require it. Other ways would also work. \r\n\r\nMy understanding is that the working group is still thinking about use cases, and it's possible/likely that some will be added, and even some use cases deleted. It will be much easier to maintain the list of requirements if we don't have to analyze all requirements each time we adjust the list of use cases that are considered in scope for IP proxying. \r\n\r\nThis suggestion was made on the MASQUE mailing list during the adoption call for this draft. \r\n\r\nThe adoption call mail thread starts at https://mailarchive.ietf.org/arch/msg/masque/cpcXQVBjpMQLbHMGpyAJCucEg3A/. I made the suggestion in https://mailarchive.ietf.org/arch/msg/masque/kG_BNeCShr98jXWC5MbjVjgHqH4/.",
       "createdAt": "2020-10-23T18:54:07Z",
       "updatedAt": "2020-10-23T18:54:07Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWU3NDA3NTE5MTY=",
+      "title": "In Network to Network proxying, why does the MASQUE Server need a subnet address?",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/3",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Section 3.6: \r\n\r\n   Similarly, to support the network-\r\n   to-network use case, the server will be able to request assignment of\r\n   an IP address range from the client, and the client will either\r\n   assign a range or decline the request.\r\n\r\nCan you elaborate why the Server would need an IP address from the Client's network? The client will need to be a gateway in the client side network to be able to receive the traffic to forward, but I don't see why the server needs appear as that gateway?\r\n",
+      "createdAt": "2020-11-11T13:05:56Z",
+      "updatedAt": "2020-11-11T13:05:56Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWU3NDA3NTI3MjA=",
+      "title": "3.6.  Identity: Whay type of identity?",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/4",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "B. Section 3.6:\r\n\r\nI do understand the need for some identify. The server first of all to allow the client to determine it is communicating with the right MASQUE server. However for the identification of the client, is that likely at all to be a domain name? Isn't that a user name, or some other form of authorization to use the resource. \r\n",
+      "createdAt": "2020-11-11T13:07:16Z",
+      "updatedAt": "2020-11-11T13:07:16Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 5,
+      "id": "MDU6SXNzdWU3NDA3NTQxMTQ=",
+      "title": "Section 3.8: Authorization requirements",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/5",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "C. Section 3.8 in this context I think there are more than the MASQUE endpoint that needs authoriztion if network to network proxying would happen. Also, extension to OAUTH, doesn't that require work in another WG? It looks like more explanation of what the needs are that prompt the need for extending the authorization protocol. ",
+      "createdAt": "2020-11-11T13:09:32Z",
+      "updatedAt": "2020-11-11T13:09:32Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 6,
+      "id": "MDU6SXNzdWU3NDA3NjAxNjE=",
+      "title": "Section 3.10: Flow control control surface",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/6",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I don't see an issue with a tunnel protocol being used without flow control. If one overwhelm either of the MASQUE client or server that is equal to congestion in the network. I think the question of flow control is a question of what mode the client want the QUIC tunnel to operate in depending on the path characteristics. In most cases I would assume an unreliable tunneling is sufficient, however over lossy links using QUIC as a reliability mechanism may be desired. I think one use case for this purpose that has been discussed in some circuits are for local repair between an endpoint in a local WIFI network, where the local network is connected to Internet over an satellite link. Local WIFI loses one like to retransmit over that local network, not end-to-end over a satellite path. In such a scenario one would need flow control as the retransmission buffering is not unlimited. So a question to the WG is if we actually need a control surface for which style of operation one are using?\r\n\r\n\r\n",
+      "createdAt": "2020-11-11T13:18:27Z",
+      "updatedAt": "2020-11-11T13:18:27Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWU3NDA3NjQ5Mzk=",
+      "title": "Congestion Control on outer QUIC connection",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/7",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "During IETF 108 there was some discussion about turning off congestion control under the assumptions that IP traffic is congestion controlled. This is something that generally have been considered as acceptable in IETF. However, if this is considered a requirements discussion of this should be added. As this might also require extension of QUIC itself to turn off congestion control for some QUIC streams or datagrams this require discussion. ",
+      "createdAt": "2020-11-11T13:25:50Z",
+      "updatedAt": "2020-11-11T13:25:50Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 8,
+      "id": "MDU6SXNzdWU3NDA3NjU4NTQ=",
+      "title": "Indistingushible requirement",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/8",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I think a general VPN use would result in a traffic pattern that would be distinguishable from encrypted HTTPS Web traffic. Is only wire format the goal here? Some clarification would be desirable. ",
+      "createdAt": "2020-11-11T13:27:11Z",
+      "updatedAt": "2020-11-11T13:27:11Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWU3NDA3NjgyMjA=",
+      "title": "Load balancing over multiple QUIC connections and servers?",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/9",
+      "state": "OPEN",
+      "author": "gloinul",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Do I interpret this section correctly that it requires a IP session to be split from a client to server over multiple QUIC connections or even two MASQUE servers? Especially if it is the later that is the case that will imply additional functionality for path selection on a sub IP session flow level to avoid reordering within such subflows. Even the first one can result in need for a reordering buffer in the server to ensure that traffic is forwarded without reordering.\r\n\r\nDoes this also need some additional concerns if someone deploys the servers under different networks, resulting in multi-homing scenarios where outgoing and returning traffic for sub-flows ends up in different paths? In general you will get some traffic steering concerns to deal with. \r\n\r\nTo me this requirement appears to potentially imply quite a bit of more functionality to work. \r\n",
+      "createdAt": "2020-11-11T13:30:48Z",
+      "updatedAt": "2020-11-11T13:30:48Z",
       "closedAt": null,
       "comments": []
     }
