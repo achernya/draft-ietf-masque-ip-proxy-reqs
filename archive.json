@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-11-19T00:04:23.926125+00:00",
+  "timestamp": "2020-11-22T00:04:07.644764+00:00",
   "repo": "ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs",
   "labels": [
     {
@@ -206,6 +206,67 @@
       "body": "Do I interpret this section correctly that it requires a IP session to be split from a client to server over multiple QUIC connections or even two MASQUE servers? Especially if it is the later that is the case that will imply additional functionality for path selection on a sub IP session flow level to avoid reordering within such subflows. Even the first one can result in need for a reordering buffer in the server to ensure that traffic is forwarded without reordering.\r\n\r\nDoes this also need some additional concerns if someone deploys the servers under different networks, resulting in multi-homing scenarios where outgoing and returning traffic for sub-flows ends up in different paths? In general you will get some traffic steering concerns to deal with. \r\n\r\nTo me this requirement appears to potentially imply quite a bit of more functionality to work. \r\n",
       "createdAt": "2020-11-11T13:30:48Z",
       "updatedAt": "2020-11-11T13:30:48Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWU3NDczNzM1OTY=",
+      "title": "Add a requirement for extensibility",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/10",
+      "state": "OPEN",
+      "author": "chris-wood",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "During IETF 109, @tfpauly suggested that an extension be added that allow deployments to negotiate that the \"full\" version of IP proxying not be implemented. Such an extension might negotiate the use of IP header compression, for example. It might be worth adding this to the requirements document.",
+      "createdAt": "2020-11-20T10:29:05Z",
+      "updatedAt": "2020-11-20T15:07:29Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "tfpauly",
+          "authorAssociation": "NONE",
+          "body": "I don't think it would negotiate not _implementing_ to the full IP proxying. I think full IP proxying can always be the baseline, but rather than it must allow extensions to negotiate doing compression or other performance optimizations.",
+          "createdAt": "2020-11-20T11:04:47Z",
+          "updatedAt": "2020-11-20T11:04:47Z"
+        },
+        {
+          "author": "chris-wood",
+          "authorAssociation": "NONE",
+          "body": "Poor choice of words on my part (lateness of the hour). Your phrasing is basically what I was after. ",
+          "createdAt": "2020-11-20T11:08:51Z",
+          "updatedAt": "2020-11-20T11:08:51Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "What does \"full IP proxying\" mean here? Not compressing the IP header?",
+          "createdAt": "2020-11-20T11:09:17Z",
+          "updatedAt": "2020-11-20T11:09:17Z"
+        },
+        {
+          "author": "gloinul",
+          "authorAssociation": "NONE",
+          "body": "If you are keeping all the IP header then its tunneling and not proxying. Because you are encapsulating the packet in QUIC and then decapsulating it. ",
+          "createdAt": "2020-11-20T15:07:29Z",
+          "updatedAt": "2020-11-20T15:07:29Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "MDU6SXNzdWU3NDczODI0MDU=",
+      "title": "Consider removing load balancing requirement",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/11",
+      "state": "OPEN",
+      "author": "chris-wood",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "During IETF 109, @martinthomson pointed out that this requirement cuts a little too much into the solution space. There seemed to be support for removing this (controversial) bit as part of the core requirements. ",
+      "createdAt": "2020-11-20T10:40:59Z",
+      "updatedAt": "2020-11-20T10:40:59Z",
       "closedAt": null,
       "comments": []
     }
