@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-12-15T00:08:27.995800+00:00",
+  "timestamp": "2020-12-17T00:06:10.446893+00:00",
   "repo": "ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs",
   "labels": [
     {
@@ -295,6 +295,78 @@
       "body": "During IETF 109, @martinthomson pointed out that this requirement cuts a little too much into the solution space. There seemed to be support for removing this (controversial) bit as part of the core requirements. ",
       "createdAt": "2020-11-20T10:40:59Z",
       "updatedAt": "2020-11-20T10:40:59Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 12,
+      "id": "MDU6SXNzdWU3NjkxNDEwOTg=",
+      "title": "IP Assignment and Non-requirement on Address Architecture",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/12",
+      "state": "OPEN",
+      "author": "mirjak",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The document currently states as a non-requirement:\r\n\r\n`It does not discuss how the IPs assigned are determined, managed, or translated.`\r\n\r\nHowever, at the same time there is a requirement on IP assignment. It's actually bit unclear to me what this non-requirement is meaning.\r\n\r\nFurther I think, there is more then just the proxy or client requesting an IP address. It might be okay for the proxy to select an IP address but then we maybe need a way to expose that to the client. Or the client might want to specify some restrictions about assignment like \"use the same IP for this CONNECT request than for another\" or \"make sure all my request to this/these server(s) use the same IP address\". Would be nice to either cover these things in the IP assignment requirement as well or formulate the requirement on a more high-level, e.g. require signaling to exchange information and restrictions about IP address assignments.",
+      "createdAt": "2020-12-16T17:46:39Z",
+      "updatedAt": "2020-12-16T17:46:39Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 13,
+      "id": "MDU6SXNzdWU3NjkxNDU5OTI=",
+      "title": "Requirement on proxying unmodified packets",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/13",
+      "state": "OPEN",
+      "author": "mirjak",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The first requirement says:\r\n\r\n\"The protocol will establish Data Transports, which will be able to forward IP packets, in their unmodified entirety.\"\r\n\r\nThis reads like IP packet can only be forwarded unmodified. This seems too restrictive for a requirement, as it wouldn't even allow any kind of preconfigured compression. I'm not even sure if we need a requirement to have an option to forward unmodified. There I actually propose to just remove it for now.\r\n\r\nAlso as a side note, I find the term Data Transport not ideal. How about Forwarding Association? That term is a bit clumsy but would be clear at least for me. I guess it would be good to agree to a common terminology here.",
+      "createdAt": "2020-12-16T17:52:30Z",
+      "updatedAt": "2020-12-16T18:04:26Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "mirjak",
+          "authorAssociation": "NONE",
+          "body": "I should probably open a separate issue on terminology but I just realised that what I proposed as Forwarding Association, is probably what you call an IP session in the draft. So in the sentence above it should probably say IP session instead of Data Transport...?\r\n\r\nAlso you use IP proxying and IP session and IP proxying session so what interchangeable in the draft. I think it would helpful to be more clear about terminology.",
+          "createdAt": "2020-12-16T18:04:25Z",
+          "updatedAt": "2020-12-16T18:04:25Z"
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "MDU6SXNzdWU3NjkxNDg5NTE=",
+      "title": "Non-requirement on IP address extraction",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/14",
+      "state": "OPEN",
+      "author": "mirjak",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The text says\r\n\r\n`How packets are forwarded between the IP proxying connection and the physical network is out of scope. This is deliberately not specified and will be left to individual implementations.`\r\n\r\nIt's actually not really clear to me what this mean. Can you further explain?",
+      "createdAt": "2020-12-16T17:56:17Z",
+      "updatedAt": "2020-12-16T18:01:05Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 15,
+      "id": "MDU6SXNzdWU3NjkxNTc4ODc=",
+      "title": "Document organisation: which requirement only apply to IP proxying (but not UDP proxying)?",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/15",
+      "state": "OPEN",
+      "author": "mirjak",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Most requirement listed actually equally apply to UDP proxying and IP proxying. I think it would be helpful to separate out those requirements that only apply to IP proxying and then have a more focused discussion about those.",
+      "createdAt": "2020-12-16T18:06:56Z",
+      "updatedAt": "2020-12-16T18:06:56Z",
       "closedAt": null,
       "comments": []
     }
