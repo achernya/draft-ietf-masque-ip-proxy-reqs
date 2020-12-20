@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2020-12-17T00:06:10.446893+00:00",
+  "timestamp": "2020-12-20T00:04:25.578774+00:00",
   "repo": "ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs",
   "labels": [
     {
@@ -310,9 +310,24 @@
       "labels": [],
       "body": "The document currently states as a non-requirement:\r\n\r\n`It does not discuss how the IPs assigned are determined, managed, or translated.`\r\n\r\nHowever, at the same time there is a requirement on IP assignment. It's actually bit unclear to me what this non-requirement is meaning.\r\n\r\nFurther I think, there is more then just the proxy or client requesting an IP address. It might be okay for the proxy to select an IP address but then we maybe need a way to expose that to the client. Or the client might want to specify some restrictions about assignment like \"use the same IP for this CONNECT request than for another\" or \"make sure all my request to this/these server(s) use the same IP address\". Would be nice to either cover these things in the IP assignment requirement as well or formulate the requirement on a more high-level, e.g. require signaling to exchange information and restrictions about IP address assignments.",
       "createdAt": "2020-12-16T17:46:39Z",
-      "updatedAt": "2020-12-16T17:46:39Z",
+      "updatedAt": "2020-12-17T18:03:24Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@mirjak can you clarify what the problem is? Currently assignment is in-scope, determining the address is not.",
+          "createdAt": "2020-12-17T17:30:02Z",
+          "updatedAt": "2020-12-17T17:30:02Z"
+        },
+        {
+          "author": "mirjak",
+          "authorAssociation": "NONE",
+          "body": "I was more wondering about the work \"translated\" here because I think we need to discuss address translation. However, I'd probably say that if e.g. the client is providing an IP address range that would be covered for me as how the proxy \"determines\" the address. Maybe the wording is just not clear here. Maybe this needs to be explained more what the concern/intention is here. I rather, however, had the feeling that having this text might be just be unnecessary. ",
+          "createdAt": "2020-12-17T18:03:24Z",
+          "updatedAt": "2020-12-17T18:03:24Z"
+        }
+      ]
     },
     {
       "number": 13,
@@ -326,7 +341,7 @@
       "labels": [],
       "body": "The first requirement says:\r\n\r\n\"The protocol will establish Data Transports, which will be able to forward IP packets, in their unmodified entirety.\"\r\n\r\nThis reads like IP packet can only be forwarded unmodified. This seems too restrictive for a requirement, as it wouldn't even allow any kind of preconfigured compression. I'm not even sure if we need a requirement to have an option to forward unmodified. There I actually propose to just remove it for now.\r\n\r\nAlso as a side note, I find the term Data Transport not ideal. How about Forwarding Association? That term is a bit clumsy but would be clear at least for me. I guess it would be good to agree to a common terminology here.",
       "createdAt": "2020-12-16T17:52:30Z",
-      "updatedAt": "2020-12-16T18:04:26Z",
+      "updatedAt": "2020-12-17T18:17:05Z",
       "closedAt": null,
       "comments": [
         {
@@ -335,6 +350,27 @@
           "body": "I should probably open a separate issue on terminology but I just realised that what I proposed as Forwarding Association, is probably what you call an IP session in the draft. So in the sentence above it should probably say IP session instead of Data Transport...?\r\n\r\nAlso you use IP proxying and IP session and IP proxying session so what interchangeable in the draft. I think it would helpful to be more clear about terminology.",
           "createdAt": "2020-12-16T18:04:25Z",
           "updatedAt": "2020-12-16T18:04:25Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "From my perspective, unmodified forwarding is a requirement, whereas any kind of transformation (such as compression) is a nice-to-have. Requiring unmodified forwarding and allowing transformation via extensions is a more robust design than requiring some kind of compression and leaving unmodified to future work - because if you have unmodified you can fall back to it when your compressor fails, whereas the other way around is not possible.\r\n\r\nPlease open a separate issue for terminology.",
+          "createdAt": "2020-12-17T17:35:13Z",
+          "updatedAt": "2020-12-17T17:35:13Z"
+        },
+        {
+          "author": "mirjak",
+          "authorAssociation": "NONE",
+          "body": "I think which one should be the default depends on the use case. I guess we maybe want to have both.\r\n\r\nHowever, why do you think that your compressor could fail? I guess it strongly depends on how you compress, however, a compressor should not fail more easily than the rest of the protocol.",
+          "createdAt": "2020-12-17T18:11:20Z",
+          "updatedAt": "2020-12-17T18:11:20Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "That depends on how you build your compressor, I've implemented compressors in the past that would compress specific packets because they were the most common and let the uncommon ones go uncompressed.",
+          "createdAt": "2020-12-17T18:17:05Z",
+          "updatedAt": "2020-12-17T18:17:05Z"
         }
       ]
     },
@@ -350,9 +386,31 @@
       "labels": [],
       "body": "The text says\r\n\r\n`How packets are forwarded between the IP proxying connection and the physical network is out of scope. This is deliberately not specified and will be left to individual implementations.`\r\n\r\nIt's actually not really clear to me what this mean. Can you further explain?",
       "createdAt": "2020-12-16T17:56:17Z",
-      "updatedAt": "2020-12-16T18:01:05Z",
+      "updatedAt": "2020-12-17T18:17:53Z",
       "closedAt": null,
-      "comments": []
+      "comments": [
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "@mirjak One way this can be accomplished is using a TUN interface, and another is raw sockets. But there are others way to do it, and we don't want to prescribe implementation details. Does that help?",
+          "createdAt": "2020-12-17T17:31:39Z",
+          "updatedAt": "2020-12-17T17:32:07Z"
+        },
+        {
+          "author": "mirjak",
+          "authorAssociation": "NONE",
+          "body": "Okay that's makes sense. However, do we really need to list this as a non-requirement? If so, adding examples might help. ",
+          "createdAt": "2020-12-17T18:06:06Z",
+          "updatedAt": "2020-12-17T18:06:06Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "To me, listing non-requirements is just as important as listing requirements. If you don't do that, you end up with infinite feature creep.",
+          "createdAt": "2020-12-17T18:17:53Z",
+          "updatedAt": "2020-12-17T18:17:53Z"
+        }
+      ]
     },
     {
       "number": 15,
@@ -366,7 +424,45 @@
       "labels": [],
       "body": "Most requirement listed actually equally apply to UDP proxying and IP proxying. I think it would be helpful to separate out those requirements that only apply to IP proxying and then have a more focused discussion about those.",
       "createdAt": "2020-12-16T18:06:56Z",
-      "updatedAt": "2020-12-16T18:06:56Z",
+      "updatedAt": "2020-12-17T18:19:01Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't see UDP proxying as relevant to this draft, why do you want to separate out requirements that happen to be met by CONNECT-UDP?",
+          "createdAt": "2020-12-17T17:36:12Z",
+          "updatedAt": "2020-12-17T17:36:12Z"
+        },
+        {
+          "author": "mirjak",
+          "authorAssociation": "NONE",
+          "body": "Because I think only does that are specific to IP proxying are the ones that are interesting for discussion. For already other requirement we should simply do the same thing as we do for UDP proxying. ",
+          "createdAt": "2020-12-17T18:12:32Z",
+          "updatedAt": "2020-12-17T18:12:32Z"
+        },
+        {
+          "author": "DavidSchinazi",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I don't follow. This document discusses requirements for IP proxying. CONNECT-UDP has nothing to do with this.",
+          "createdAt": "2020-12-17T18:19:01Z",
+          "updatedAt": "2020-12-17T18:19:01Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "MDU6SXNzdWU3NzAyNTk5Nzc=",
+      "title": "Clarify terminology ",
+      "url": "https://github.com/ietf-wg-masque/draft-ietf-masque-ip-proxy-reqs/issues/16",
+      "state": "OPEN",
+      "author": "mirjak",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "IP proxying and IP session and IP proxying session are used so what interchangeable in the draft. Also the use of IP session compared to Data Transport is not always clear. Do we really need both terms. I think it would helpful to be more clear about terminology. I would also prefer a term like forwarding association or maybe forwarding session.",
+      "createdAt": "2020-12-17T18:08:30Z",
+      "updatedAt": "2020-12-17T18:08:30Z",
       "closedAt": null,
       "comments": []
     }
