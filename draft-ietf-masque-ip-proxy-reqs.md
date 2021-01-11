@@ -1,4 +1,4 @@
----
+--
 title: Requirements for a MASQUE Protocol to Proxy IP Traffic
 abbrev: IP Proxying Requirements
 docname: draft-ietf-masque-ip-proxy-reqs-latest
@@ -234,7 +234,10 @@ will keep in mind to ensure it will be possible to design such extensions.
 
 This extension would allow for load balancing of the traffic sent across the IP
 Session, such as to another server. This allows the IP proxying mechanisms to
-scale-out to multiple servers.
+scale-out to multiple servers. This improves the throughput of the IP Session
+beyond the limitations of a single server (and possibly in some implementations,
+a single CPU). This also es the IP Session available across server
+interruptions, such as routine maintenance and software upgrades.
 
 ## Authentication
 
